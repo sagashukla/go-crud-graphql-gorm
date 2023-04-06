@@ -54,6 +54,14 @@ func CreateJobListing(jobInfo model.CreateJobListingInput) *model.JobListing{
 func UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput) *model.JobListing{
 	id := jobId
 	job := model.JobListing{
+		ID: jobId,
+		Title: jobInfo.Title,
+		Description: jobInfo.Description,
+		Company: jobInfo.Company,
+		URL: jobInfo.URL,
+	}
+	jobToBeUpdated := model.JobListing{
+		ID: jobId,
 		Title: jobInfo.Title,
 		Description: jobInfo.Description,
 		Company: jobInfo.Company,
@@ -61,12 +69,12 @@ func UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput) *model.
 	}
 	
 	DBM.First(&job, id)
-	DBM.Model(&job).Updates(&job)
+	DBM.Model(&job).Updates(&jobToBeUpdated)
 	return &job
 }
 
 func DeleteJobListing(jobId string) *model.DeleteJobResponse {
 	id := jobId
-	DBM.Delete(&model.DeleteJobResponse{}, id)
+	DBM.Delete(&model.JobListing{}, id)
 	return &model.DeleteJobResponse{DeleteJobID: jobId}
 }
